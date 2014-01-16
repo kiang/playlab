@@ -58,6 +58,6 @@ $socketio
             foreach($counter AS $ip => $cnt) {
                 $message .= '> ' . $ip . ' : ' . $cnt . '<br />';
             }
-            $socketio->emit('update', array('msg' => $message));
+            $socketio->emit('update', array('msg' => $message, 'counter' => $counter));
         })
         ->dispatch();
