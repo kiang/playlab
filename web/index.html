@@ -74,6 +74,9 @@
                         user: myname
                     });
                     $('input[type=text]').val('');
+                    $('#content').animate({
+                        scrollTop: $('#content').get(0).scrollHeight
+                    }, 1500);
                     return false;
                 });
             });
