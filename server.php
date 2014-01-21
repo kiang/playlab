@@ -45,7 +45,7 @@ $socketio
         })
         ->onRequest('/bootstrap.min.css', function($connection, \EventHttpRequest $request) {
             $response = new Response(file_get_contents(__DIR__ . '/web/bootstrap.min.css'));
-            $response->setContentType('text/javascript', 'UTF-8');
+            $response->setContentType('text/css', 'UTF-8');
             $connection->sendResponse($response);
         })
         

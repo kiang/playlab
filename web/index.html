@@ -1,14 +1,15 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="bootstrap.min.css" rel="stylesheet">
         <title>Chat</title>
         <script src="socket.io.js"></script>
         <script src='jquery.min.js'></script>
-        <link href="bootstrap.min.css" rel="stylesheet">
         <style>
             .content {
-                width:  400px;
                 height: 280px;
                 border: 1px solid;
                 overflow: auto;
@@ -29,14 +30,19 @@
         </style>
     </head>
     <body>
-        <div id='content' class="content"></div>
-        <div class="content">
-            <form>
-                <input type='text' value='' /><input type='submit' value='send' />
-            </form>
+        <div class="container">
+            <div class="row">
+                <div id='content' class="col-md-6 content"></div>
+                <div class="col-md-6 content">
+                    <form>
+                        <input type='text' value='' /><input type='submit' value='send' />
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div id='counter' class="col-md-12"></div>
+            </div>
         </div>
-        <div style="clear:both;"></div>
-        <div id='counter' class="content"></div>
 
         <script>
             function messageScroll() {
