@@ -37,22 +37,35 @@
                     <form>
                         <input type='text' value='' /><input type='submit' value='send' />
                     </form>
+                    <blockquote>
+                        <a class="btn btn-primary btn-lg" href="#" data-value="1">1</a>
+                        <a class="btn btn-success btn-lg" href="#" data-value="2">2</a>
+                        <a class="btn btn-warning btn-lg" href="#" data-value="3">3</a>
+                    </blockquote>
                 </div>
             </div>
             <div class="row">
-                <div id='counter' class="col-md-12"></div>
+                <div id='answers' class="col-md-12"></div>
             </div>
         </div>
 
         <script>
-            function messageScroll() {
-                $('#content').animate({
-                    scrollTop: $('#content').get(0).scrollHeight
-                }, 300);
-            }
             $(function() {
                 var myname = null;
                 var socket = io.connect('http://127.0.0.1:8080/');
+                function messageScroll() {
+                    $('#content').animate({
+                        scrollTop: $('#content').get(0).scrollHeight
+                    }, 300);
+                }
+
+                function getUserName() {
+                    if (myname == null) {
+                        myname = prompt("請輸入你的暱稱");
+                        socket.emit('addme', myname);
+                    }
+                    return myname;
+                }
                 socket.on('update', function(data) {
                     if (data.msg == '/clear') {
                         $('#content').empty();
@@ -64,29 +77,33 @@
                     else {
                         $('#content').append('<div><label>' + data.msg + '</label></div>');
                     }
-                    if (data.counter) {
-                        for (ip in data.counter) {
-                            var divId = 'ip' + ip;
-                            divId = divId.replace(/\./g, '-');
-                            if ($('#' + divId).length === 0) {
-                                $('#counter').append('<div id="' + divId + '">' + ip + ' : ' + data.counter[ip] + '</div>');
-                            } else {
-                                $('#' + divId).html(ip + ' : ' + data.counter[ip]);
-                            }
-                        }
-                    }
                     messageScroll();
                 });
-                $('form').submit(function() {
-                    if (myname == null) {
-                        myname = prompt("yourname");
-                        socket.emit('addme', myname);
+                socket.on('answer', function(data) {
+                    if (data.user) {
+                        var blockId = 'answer' + data.user;
+                        var blockElement = $('#' + blockId);
+                        if(blockElement.length === 0) {
+                            $('#answers').append('<div class="col-md-1" id="' + blockId + '"><span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span></div>');
+                        } else {
+                            blockElement.html('<span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span>');
+                        }
                     }
+                });
+                $('form').submit(function() {
                     socket.emit('msg', {
                         msg: $('input[type=text]').val(),
-                        user: myname
+                        user: getUserName()
                     });
                     $('input[type=text]').val('');
+                    messageScroll();
+                    return false;
+                });
+                $('a.btn').click(function() {
+                    socket.emit('answer', {
+                        answer: $(this).attr('data-value'),
+                        user: getUserName()
+                    });
                     messageScroll();
                     return false;
                 });

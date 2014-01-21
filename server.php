@@ -19,9 +19,14 @@ $chat = $socketio
             $chat->emit('update', array('msg' => "{$messageEvent->getMessage()} is coming."));
         })
         ->on('msg', function(Event\MessageEvent $messageEvent) use (&$chat) {
+            $message = $messageEvent->getMessage();
+            $chat->emit('update', $message);
+        })
+        ->on('answer', function(Event\MessageEvent $messageEvent) use (&$chat) {
     $message = $messageEvent->getMessage();
-    $chat->emit('update', $message);
-});
+    $chat->emit('answer', $message);
+})
+;
 $socketio
         ->listen(8080)
         ->onConnect(function(Connection $connection) use ($socketio) {
@@ -47,23 +52,5 @@ $socketio
             $response = new Response(file_get_contents(__DIR__ . '/web/bootstrap.min.css'));
             $response->setContentType('text/css', 'UTF-8');
             $connection->sendResponse($response);
-        })
-        
-        ->onRequest('/count', function($connection, \EventHttpRequest $request) use (&$socketio) {
-            global $counter;
-            list($host, $port) = $connection->getRemote();
-            if (isset($counter[$host])) {
-                ++$counter[$host];
-            } else {
-                $counter[$host] = 1;
-            }
-            $response = new Response('');
-            $response->setContentType('text/html', 'UTF-8');
-            $connection->sendResponse($response);
-            $message = date('Y-m-d H:i:s') . '<br />';
-            foreach($counter AS $ip => $cnt) {
-                $message .= '> ' . $ip . ' : ' . $cnt . '<br />';
-            }
-            $socketio->emit('update', array('msg' => $message, 'counter' => $counter));
         })
         ->dispatch();
