@@ -38,6 +38,11 @@
         <div id='counter' class="content"></div>
 
         <script>
+            function messageScroll() {
+                $('#content').animate({
+                    scrollTop: $('#content').get(0).scrollHeight
+                }, 300);
+            }
             $(function() {
                 var myname = null;
                 var socket = io.connect('http://127.0.0.1:8080/');
@@ -53,16 +58,17 @@
                         $('#content').append('<div><label>' + data.msg + '</label></div>');
                     }
                     if (data.counter) {
-                        for(ip in data.counter) {
+                        for (ip in data.counter) {
                             var divId = 'ip' + ip;
                             divId = divId.replace(/\./g, '-');
-                            if($('#' + divId).length === 0) {
+                            if ($('#' + divId).length === 0) {
                                 $('#counter').append('<div id="' + divId + '">' + ip + ' : ' + data.counter[ip] + '</div>');
                             } else {
                                 $('#' + divId).html(ip + ' : ' + data.counter[ip]);
                             }
                         }
                     }
+                    messageScroll();
                 });
                 $('form').submit(function() {
                     if (myname == null) {
@@ -74,9 +80,7 @@
                         user: myname
                     });
                     $('input[type=text]').val('');
-                    $('#content').animate({
-                        scrollTop: $('#content').get(0).scrollHeight
-                    }, 1500);
+                    messageScroll();
                     return false;
                 });
             });
