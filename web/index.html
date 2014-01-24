@@ -25,7 +25,7 @@
             .content >div >span {
                 color: blue;
                 display: inline-block;
-                width:  50px;
+                width:  80px;
             }
 
         </style>
@@ -87,7 +87,7 @@
                         var blockId = 'answer' + data.user;
                         var blockElement = $('#' + blockId);
                         if(blockElement.length === 0) {
-                            $('#answers').append('<div class="col-xs-1" id="' + blockId + '"><span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span></div>');
+                            $('#answers').append('<div class="col-xs-2" id="' + blockId + '"><span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span></div>');
                         } else {
                             blockElement.html('<span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span>');
                         }
