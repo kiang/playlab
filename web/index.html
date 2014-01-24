@@ -10,6 +10,7 @@
         <script src='jquery.min.js'></script>
         <style>
             .content {
+		width: 50%;
                 height: 280px;
                 border: 1px solid;
                 overflow: auto;
@@ -32,8 +33,8 @@
     <body>
         <div class="container">
             <div class="row">
-                <div id='content' class="col-md-6 content"></div>
-                <div class="col-md-6 content">
+                <div id='content' class="content"></div>
+                <div class="content">
                     <form>
                         <input type='text' value='' /><input type='submit' value='send' />
                     </form>
@@ -54,7 +55,7 @@
         <script>
             $(function() {
                 var myname = null;
-                var socket = io.connect('http://127.0.0.1:8080/');
+                var socket = io.connect('http://203.69.90.102:8080/');
                 function messageScroll() {
                     $('#content').animate({
                         scrollTop: $('#content').get(0).scrollHeight
@@ -86,7 +87,7 @@
                         var blockId = 'answer' + data.user;
                         var blockElement = $('#' + blockId);
                         if(blockElement.length === 0) {
-                            $('#answers').append('<div class="col-md-1" id="' + blockId + '"><span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span></div>');
+                            $('#answers').append('<div class="col-xs-1" id="' + blockId + '"><span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span></div>');
                         } else {
                             blockElement.html('<span>' + data.user + '</span><br /><span class="btn btn-info btn-lg">' + data.answer + '</span>');
                         }
